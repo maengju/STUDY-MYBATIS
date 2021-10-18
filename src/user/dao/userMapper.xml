@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="userSQL">
+ 	<!-- 만약 오라클 컬럼과 DTO 필드며이 서로 틀릴때 -->
+ 	<resultMap type="user" id="userResult">
+ 		<!-- property="필드명" column="오라클 필드명" -->
+ 		<result property="name" column="NAME"/>
+ 		<result property="id" column="ID"/>
+ 		<result property="pwd" column="PWD"/>
+ 	</resultMap>
+ 	
+ 
+ 
+ 
+ 	<insert id="write" parameterType="user">
+ 		insert into usertable values(#{name},#{id},#{pwd})
+ 	</insert>
+ 	
+ 	<select id="getUserList" resultMap="userResult"><!-- 1줄당 user.bean.UserDTO 담기, 자동으로 List에 담는다. -->
+ 		<!-- resultType은 필드명과 오라클필드명이 같을때 사용 -->
+ 		select * from usertable
+ 	</select>
+ 	
+ 	<select id="getUser" parameterType="user" resultType="user">
+ 		select * from usertable where id = #{id}
+ 	</select>
+ 	
+ 	
+ 	<select id="search"  parameterType="user" resultType="user">
+            select * from usertable where
+ 		<if test="name != null and id ==null">
+ 			name like '%' ||  #{name} || '%'
+
+ 		</if>
+ 		
+ 		<if test="id != null and name ==null">
+ 			 id like '%' ||  #{id} || '%'
+ 		</if>
+ 	</select>
+ 	
+ 	
+ 	<update id="update" parameterType="user">
+ 		update usertable set name=#{name},pwd=#{pwd} where id=#{id}
+ 	</update>
+ 	
+ 	<delete id="delete" parameterType="user">
+ 		delete from usertable where id = #{id}
+ 	</delete>
+ 	
+ </mapper>
