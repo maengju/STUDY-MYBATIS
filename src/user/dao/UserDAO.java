@@ -27,6 +27,7 @@ public class UserDAO {
 		return instance;
 	}
 	
+	
 	public UserDAO() {
 		
 		
@@ -66,14 +67,6 @@ public class UserDAO {
 		
 		sqlSession.close();
 		return list;
-	}
-
-	public String getuser(String userDTO) {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
-		
-		String idCheck = sqlSession.selectOne("userSQL.getUser",userDTO);
-		
-		return idCheck;
 	}
 
 	public UserDTO getuser(UserDTO userDTO) {
